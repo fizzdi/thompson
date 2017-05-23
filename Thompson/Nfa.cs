@@ -27,7 +27,7 @@ namespace Thompson
         }
 
         public List<Char> alphabet;
-        public ArrayList[] tabl;
+        public List<List<List<int>>> tabl;
         Random rnd = new Random();
 
         private static bool checkRegularBracketSequence(String str)
@@ -74,7 +74,7 @@ namespace Thompson
 
         public static string infix2postfix(String infixRE, out List<Char> alphabet)
         {
-            alphabet = new List<Char>() { '#' };
+            alphabet = new List<Char>() { 'ε' };
             String postfixRE = String.Empty;
             Stack<Char> operationStack = new Stack<Char>();
             for (int i = 0; i < infixRE.Length; i++)
@@ -201,6 +201,7 @@ namespace Thompson
                                 }
                             }
                             currentGraph[0][0].Add(1 + last.Count);
+                            currentGraph[last.Count][0].Add(1);
                             currentGraph[last.Count][0].Add(1 + last.Count);
                             transitionFunction.Push(currentGraph);
                         }
@@ -257,7 +258,8 @@ namespace Thompson
                         break;
                 }
             }
-            print(transitionFunction.Peek());
+            tabl = transitionFunction.Pop();
+            print(tabl);
         }
 
         void print(List<List<List<int>>> tabl)

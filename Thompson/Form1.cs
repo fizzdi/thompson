@@ -85,7 +85,7 @@ namespace Thompson
 
         private List<List<int>> getNumberConnections()
         {
-            int nv = nfa.tabl[0].Count; //количество вершин
+            int nv = nfa.tabl.Count; //количество вершин
             List<List<int>> res = new List<List<int>>();
             for (int i = 0; i < nv; ++i)
             {
@@ -95,18 +95,14 @@ namespace Thompson
                     res[i].Add(0);
                 }
             }
-            for (int i = 0; i < nfa.tabl.Length; ++i)
+            for (int i = 0; i < nfa.tabl.Count; ++i)
             {
-
-                var ctab = nfa.tabl[i]; //таблица переходов по букве
-                for (int j = 0; j < ctab.Count; ++j)
+                for (int j = 0; j < nfa.tabl[i].Count; ++j)
                 {
-                    if (ctab[j] == null) continue;
-                    ArrayList vtab = ctab[j] as ArrayList; //таблица переходов из вершины
-                    for (int k = 0; k < vtab.Count; ++k)
+                    for (int k = 0; k < nfa.tabl[i][j].Count; ++k)
                     {
-                        res[j][(int)vtab[k]]++;
-                        res[(int)vtab[k]][j]++;
+                        res[i][nfa.tabl[i][j][k]]++;
+                        res[nfa.tabl[i][j][k]][i]++;
                     }
                 }
             }
@@ -124,7 +120,7 @@ namespace Thompson
 
             List<List<int>> paintLine = getNumberConnections();
 
-            int nv = nfa.tabl[0].Count; //количество вершин
+            int nv = nfa.tabl.Count; //количество вершин
             List<List<int>> paintedLine = new List<List<int>>();
             for (int i = 0; i < nv; ++i)
             {
@@ -139,21 +135,19 @@ namespace Thompson
             using (Graphics g = panel1.CreateGraphics())
             {
                 //очистка панели
-                g.Clear(panel1.BackColor);
+                g.Clear(Color.White);
 
-                for (int i = 0; i < nfa.tabl.Length; ++i)
+                for (int i = 0; i < nfa.tabl.Count; ++i)
                 {
+                    int fvertex = i; //номер стартовой вершины
                     for (int j = 0; j < nfa.tabl[i].Count; ++j)
                     {
                         //перебор всех переходов
-                        int fvertex = j; //номер стартовой вершины
                         PictureBox pb0 = pbs[j] as PictureBox;
-                        if (nfa.tabl[i][j] == null) continue;
-                        ArrayList tab = nfa.tabl[i][j] as ArrayList;
-                        for (int k = 0; k < tab.Count; ++k)
+                        for (int k = 0; k < nfa.tabl[i][j].Count; ++k)
                         {
-                            int svertex = (int)tab[k]; //номер конечной вершины
-                            PictureBox pb1 = pbs[(int)tab[k]] as PictureBox;
+                            int svertex = nfa.tabl[i][j][k]; //номер конечной вершины
+                            PictureBox pb1 = pbs[svertex] as PictureBox;
 
                             Point a, b;
                             //a - начальная точка
@@ -164,15 +158,14 @@ namespace Thompson
 
                             //Если это первая линия и количество линий НЕчетно - линия прямая
                             //иначе дуга
-                            string letter = "";
-                            if (i != nfa.tabl.Length - 1)
-                                letter = "" + nfa.alphabet[i];
-                            else letter = "ε";
+                            string letter = nfa.alphabet[j].ToString();
 
                             if (paintLine[fvertex][svertex] % 2 == 1)
                             {
-                                g.DrawLine(pen, a, b);
-                                g.DrawString(letter, Font, Brushes.Black, getPointForText(pb0.Location, pb1.Location, pb1.Width / 2));
+                               // g.DrawLine(pen, a, b);
+                                //g.DrawString(letter, Font, Brushes.Black, getPointForText(pb0.Location, pb1.Location, pb1.Width / 2));
+                                g.DrawLine(pen, a.X, a.Y, b.X, b.Y);
+
                             }
                             else
                             {
@@ -261,13 +254,10 @@ namespace Thompson
             //идем в глубину, пока не найдем конечную вершину или не сможем делать переходы
             if (isfinal[v])
                 return true;
-            if (nfa.tabl[nfa.tabl.Length - 1][v] == null)
-                return false;
 
-            var tab = nfa.tabl[nfa.tabl.Length - 1][v] as ArrayList;
-            for (int i = 0; i < tab.Count; ++i)
+            for (int i = 0; i < nfa.tabl[v][0].Count; ++i)
             {
-                isfinal[v] = isfinal[v] || checkfinal((int)tab[i]);
+                isfinal[v] = isfinal[v] || checkfinal(nfa.tabl[v][0][i]);
                 if (isfinal[v])
                     return true;
             }
@@ -286,7 +276,6 @@ namespace Thompson
                 Конечной считается последняя
                 eps Переходы в последнем столбце
             */
-            var tab = nfa.tabl[nfa.tabl.Length - 1];
             for (int i = 0; i < n; ++i)
             {
                 Array.Clear(used, 0, used.Length);
@@ -381,6 +370,8 @@ namespace Thompson
             textbox_InfixRE.Text = nfa.InfixRegularExpression;
 
             nfa.build();
+            createPictureBoxes(nfa.tabl.Count);
+
         }
 
         /*private void button2_Click(object sender, EventArgs e)
