@@ -14,8 +14,7 @@ namespace Thompson
 {
     public partial class Form1 : Form
     {
-        Input input;
-        Nfa nfa;
+        NFA nfa;
 
         //вспомогательная переменная, обозначает текущую перетаскиваемую фигуру
         PictureBox movingPB = null;
@@ -34,7 +33,6 @@ namespace Thompson
         public Form1()
         {
             InitializeComponent();
-            input = new Input();
         }
 
         //событие на зажатие кнопки, начала drag'n'drop
@@ -168,7 +166,7 @@ namespace Thompson
                             //иначе дуга
                             string letter = "";
                             if (i != nfa.tabl.Length - 1)
-                                letter = "" + nfa.abc[i];
+                                letter = "" + nfa.alphabet[i];
                             else letter = "ε";
 
                             if (paintLine[fvertex][svertex] % 2 == 1)
@@ -334,36 +332,14 @@ namespace Thompson
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string s = input.init();
-            if (s != "OK") MessageBox.Show(s);
-            int count = 0;
-            for (int i = 0; i < input.lines[0].Length; i++)
-            {
-                switch (input.lines[0][i])
-                {
-                    case '(': count++; break;
-                    case ')': count--; break;
-                }
-                if (count < 0) break;
-            }
-            if (count != 0)
-            {
-                MessageBox.Show("нарушена последовательность скобок");
-                return;
-            }
-            if (input.lines[0][0] == '*')
-            {
-                MessageBox.Show("в первой позиции символ * ");
-                return;
-            }
-            MessageBox.Show("Инфиксная форма\n" + input.lines[0]);
-            nfa = new Nfa(input.lines[0]);
-            MessageBox.Show("Постфиксная форма\n" + nfa.ex);
+            //MessageBox.Show("Инфиксная форма\n" + input.lines[0]);
+            //nfa = new NFA(input.lines[0]);
+            //MessageBox.Show("Постфиксная форма\n" + nfa.postfixRE);
             nfa.build();
 
             createPictureBoxes(nfa.tabl[0].Count);
 
-            string[] str = new string[input.lines.Length];
+            /*string[] str = new string[input.lines.Length];
             for (int i = 1; i < input.lines.Length; i++)
             {
                 str[i] = '"' + input.lines[i] + '"' + nfa.make(input.lines[i]);
@@ -372,12 +348,7 @@ namespace Thompson
             string path = Directory.GetCurrentDirectory() + '/';
             using (StreamWriter outputFile = new StreamWriter(path + "output.txt"))
                 foreach (string st in str)
-                    outputFile.WriteLine(st);
-        }
-
-        private void Form1_DragDrop(object sender, DragEventArgs e)
-        {
-
+                    outputFile.WriteLine(st);*/
         }
 
         //Разрешаем перенос, если переносится картинка
@@ -403,9 +374,18 @@ namespace Thompson
             drawLines();
         }
 
+        private void button_build_Click(object sender, EventArgs e)
+        {
+            nfa = new NFA(textbox_RE.Text);
+            textbox_PostfixRE.Text = nfa.PostixRegularExpression;
+            textbox_InfixRE.Text = nfa.InfixRegularExpression;
+
+            nfa.build();
+        }
+
         /*private void button2_Click(object sender, EventArgs e)
         {// ганерим случайную строку из алфавита
-            string s = nfa.random();
+            string s = nfa.rndm();
             MessageBox.Show(s + nfa.make(s));
             
         }*/
