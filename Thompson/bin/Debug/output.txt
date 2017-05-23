@@ -1,0 +1,7 @@
+
+"defdef"  YES
+"klmklm"  YES
+"defdefklm"  YES
+"defdef"  YES
+""  NO
+"Def"  NO, за пределами алфавита

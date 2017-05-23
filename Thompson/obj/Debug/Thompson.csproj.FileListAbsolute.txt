@@ -1,0 +1,18 @@
+c:\users\igor_z\documents\visual studio 2015\Projects\Thompson\Thompson\bin\Debug\Thompson.exe.config
+c:\users\igor_z\documents\visual studio 2015\Projects\Thompson\Thompson\bin\Debug\Thompson.exe
+c:\users\igor_z\documents\visual studio 2015\Projects\Thompson\Thompson\bin\Debug\Thompson.pdb
+c:\users\igor_z\documents\visual studio 2015\Projects\Thompson\Thompson\obj\Debug\Thompson.Form1.resources
+c:\users\igor_z\documents\visual studio 2015\Projects\Thompson\Thompson\obj\Debug\Thompson.Properties.Resources.resources
+c:\users\igor_z\documents\visual studio 2015\Projects\Thompson\Thompson\obj\Debug\Thompson.csproj.GenerateResource.Cache
+c:\users\igor_z\documents\visual studio 2015\Projects\Thompson\Thompson\obj\Debug\Thompson.exe
+c:\users\igor_z\documents\visual studio 2015\Projects\Thompson\Thompson\obj\Debug\Thompson.pdb
+C:\Users\igor_z\Documents\Visual Studio 2015\Projects\Thompson\Thompson\obj\Debug\Thompson.csprojResolveAssemblyReference.cache
+C:\Users\Fizz\Desktop\Thompson\Thompson\bin\Debug\Thompson.exe.config
+C:\Users\Fizz\Desktop\Thompson\Thompson\obj\Debug\Thompson.exe
+C:\Users\Fizz\Desktop\Thompson\Thompson\obj\Debug\Thompson.pdb
+C:\Users\Fizz\Desktop\Thompson\Thompson\bin\Debug\Thompson.exe
+C:\Users\Fizz\Desktop\Thompson\Thompson\bin\Debug\Thompson.pdb
+C:\Users\Fizz\Desktop\Thompson\Thompson\obj\Debug\Thompson.csprojResolveAssemblyReference.cache
+C:\Users\Fizz\Desktop\Thompson\Thompson\obj\Debug\Thompson.Form1.resources
+C:\Users\Fizz\Desktop\Thompson\Thompson\obj\Debug\Thompson.Properties.Resources.resources
+C:\Users\Fizz\Desktop\Thompson\Thompson\obj\Debug\Thompson.csproj.GenerateResource.Cache
