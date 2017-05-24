@@ -24,3 +24,4 @@ E:\study\Thompson\Thompson\obj\Debug\Thompson.Properties.Resources.resources
 E:\study\Thompson\Thompson\obj\Debug\Thompson.csproj.GenerateResource.Cache
 E:\study\Thompson\Thompson\obj\Debug\Thompson.exe
 E:\study\Thompson\Thompson\obj\Debug\Thompson.pdb
+E:\study\Thompson\Thompson\obj\Debug\Thompson.csprojResolveAssemblyReference.cache

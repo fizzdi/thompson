@@ -18,7 +18,7 @@ namespace Thompson
 
         //вспомогательная переменная, обозначает текущую перетаскиваемую фигуру
         PictureBox movingPB = null;
-        ArrayList pbs = new ArrayList();
+        List<PictureBox> pbs = new List<PictureBox>();
 
         /*координаты смещения относительно левого верхнего угла PictureBox-а, 
             нужны для того, что бы PictureBox переместился именно за ту точку,
@@ -140,14 +140,14 @@ namespace Thompson
                 for (int i = 0; i < nfa.tabl.Count; ++i)
                 {
                     int fvertex = i; //номер стартовой вершины
+                    PictureBox pb0 = pbs[fvertex];
                     for (int j = 0; j < nfa.tabl[i].Count; ++j)
                     {
                         //перебор всех переходов
-                        PictureBox pb0 = pbs[j] as PictureBox;
                         for (int k = 0; k < nfa.tabl[i][j].Count; ++k)
                         {
                             int svertex = nfa.tabl[i][j][k]; //номер конечной вершины
-                            PictureBox pb1 = pbs[svertex] as PictureBox;
+                            PictureBox pb1 = pbs[svertex];
 
                             Point a, b;
                             //a - начальная точка
@@ -156,16 +156,15 @@ namespace Thompson
                             a = new Point(pb0.Left + pb0.Width / 2, pb0.Top + pb0.Height / 2);
                             b = getNearestPoint(pb0.Location, pb1.Location, pb1.Width / 2);
 
+
                             //Если это первая линия и количество линий НЕчетно - линия прямая
                             //иначе дуга
                             string letter = nfa.alphabet[j].ToString();
 
                             if (paintLine[fvertex][svertex] % 2 == 1)
                             {
-                               // g.DrawLine(pen, a, b);
-                                //g.DrawString(letter, Font, Brushes.Black, getPointForText(pb0.Location, pb1.Location, pb1.Width / 2));
-                                g.DrawLine(pen, a.X, a.Y, b.X, b.Y);
-
+                                 g.DrawLine(pen, a, b);
+                                 g.DrawString(letter, Font, Brushes.Black, getPointForText(pb0.Location, pb1.Location, pb1.Width / 2));
                             }
                             else
                             {
@@ -186,12 +185,12 @@ namespace Thompson
                                 {
                                     xst = (int)(from.X + r + r * Math.Cos(beta));
                                     yst = (int)(from.Y + r + r * Math.Sin(beta));
-                                    xen = (int)(to.X + r + r * Math.Cos(Math.PI+ beta));
-                                    yen = (int)(to.Y + r + r * Math.Sin(Math.PI+ beta));
+                                    xen = (int)(to.X + r + r * Math.Cos(Math.PI + beta));
+                                    yen = (int)(to.Y + r + r * Math.Sin(Math.PI + beta));
 
                                     xis1 = (int)(xst + lenlin * Math.Cos(beta - alpha));
                                     yis1 = (int)(yst + lenlin * Math.Sin(beta - alpha));
-                                    xis2 = (int)(xen + lenlin * Math.Cos(Math.PI+beta + alpha));
+                                    xis2 = (int)(xen + lenlin * Math.Cos(Math.PI + beta + alpha));
                                     yis2 = (int)(yen + lenlin * Math.Sin(Math.PI + beta + alpha));
 
                                     int distance = (int)(Math.Sqrt((from.X - to.X) * (from.X - to.X) + (from.Y - to.Y) * (from.Y - to.Y)));
@@ -234,11 +233,9 @@ namespace Thompson
                                         g.DrawString(letter, Font, Brushes.Black, getPointForText(pb0.Location, pb1.Location, pb1.Width / 2));
                                     }
                                 }
-                                
-                                paintedLine[fvertex][svertex]++;
-                                paintedLine[svertex][fvertex]++;
-
                             }
+                            paintedLine[fvertex][svertex]++;
+                            paintedLine[svertex][fvertex]++;
                         }
                     }
                 }
@@ -316,7 +313,6 @@ namespace Thompson
                 pbs.Add(cur);
                 panel1.Controls.Add(cur);
             }
-            drawLines();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -365,13 +361,15 @@ namespace Thompson
 
         private void button_build_Click(object sender, EventArgs e)
         {
+            pbs.ForEach(panel1.Controls.Remove);
+            pbs.Clear();
             nfa = new NFA(textbox_RE.Text);
             textbox_PostfixRE.Text = nfa.PostixRegularExpression;
             textbox_InfixRE.Text = nfa.InfixRegularExpression;
 
             nfa.build();
             createPictureBoxes(nfa.tabl.Count);
-
+            drawLines();
         }
 
         /*private void button2_Click(object sender, EventArgs e)

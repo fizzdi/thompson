@@ -88,7 +88,7 @@ namespace Thompson
                     //находящиеся в стеке, до ближайшей открывающей скобки или до операции с приоритетом меньшим, 
                     //чем у новой операции, перекладываются в формируемую запись, а новая операции кладётся в стек.
                     case '*':
-                        while ((operationStack.Count != 0) && (operationStack.Peek() != '(') && (operationStack.Peek() != '*'))
+                        while ((operationStack.Count != 0) && (operationStack.Peek() != '(') && (operationStack.Peek() != '.'))
                             postfixRE += operationStack.Pop();
                         operationStack.Push(infixRE[i]);
                         break;
@@ -232,10 +232,11 @@ namespace Thompson
                             List<List<List<int>>> currentGraph = createEmptyGraph(left.Count + right.Count + 2, alphabet.Count);
 
                             currentGraph[0][0].Add(1);
+                            currentGraph[0][0].Add(left.Count+1);
                             for (int ii = 0; ii < left.Count; ++ii)
                                 for (int jj = 0; jj < left[ii].Count; ++jj)
                                     for (int kk = 0; kk < left[ii][jj].Count; ++kk)
-                                        currentGraph[ii][jj].Add(left[ii][jj][kk] + 1);
+                                        currentGraph[ii+1][jj].Add(left[ii][jj][kk] + 1);
 
                             for (int ii = 0; ii < right.Count; ++ii)
                                 for (int jj = 0; jj < right[ii].Count; ++jj)
@@ -243,7 +244,7 @@ namespace Thompson
                                         currentGraph[ii + left.Count + 1][jj].Add(right[ii][jj][kk] + left.Count + 1);
 
                             currentGraph[left.Count][0].Add(currentGraph.Count - 1);
-                            currentGraph[right.Count + left.Count + 1][0].Add(currentGraph.Count - 1);
+                            currentGraph[right.Count + left.Count][0].Add(currentGraph.Count - 1);
                             transitionFunction.Push(currentGraph);
 
                         }
