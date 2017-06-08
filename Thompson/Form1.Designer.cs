@@ -115,6 +115,7 @@
             this.textbox_graph.Multiline = true;
             this.textbox_graph.Name = "textbox_graph";
             this.textbox_graph.ReadOnly = true;
+            this.textbox_graph.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textbox_graph.Size = new System.Drawing.Size(666, 538);
             this.textbox_graph.TabIndex = 22;
             // 

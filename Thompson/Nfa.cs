@@ -113,7 +113,8 @@ namespace Thompson
                     case ')':
                         while ((operationStack.Count != 0) && (operationStack.Peek() != '('))
                             postfixRE += operationStack.Pop();
-                        operationStack.Push(infixRE[i]);
+                        if ((operationStack.Count != 0) && (operationStack.Peek() == '('))
+                            operationStack.Pop();
                         break;
 
                     default:

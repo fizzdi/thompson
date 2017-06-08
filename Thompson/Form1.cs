@@ -28,6 +28,7 @@ namespace Thompson
         int dy = 0;
         bool[] isfinal;
         bool[] used;
+        bool is_builded = false;
 
 
         public Form1()
@@ -113,6 +114,8 @@ namespace Thompson
         //отрисовка/перерисовка линий
         private void drawLines()
         {
+            if (!is_builded)
+                return;
             Pen pen = new Pen(Color.Black, 4);
             Pen spen = new Pen(Color.Black, 4);
             //конец линии - стрелка
@@ -265,6 +268,8 @@ namespace Thompson
         //создание PictureBox-ов
         private void createPictureBoxes(int n)
         {
+            if (!is_builded)
+                return;
             //пометка вершин конечными
             isfinal = new bool[n];
             used = new bool[n];
@@ -349,6 +354,7 @@ namespace Thompson
             textbox_InfixRE.Text = nfa.InfixRegularExpression;
 
             nfa.build(textbox_graph);
+            is_builded = true;
             createPictureBoxes(nfa.tabl.Count);
             drawLines();
             button_save.Enabled = true;
