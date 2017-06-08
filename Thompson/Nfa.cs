@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 
 namespace Thompson
 {
@@ -176,8 +177,9 @@ namespace Thompson
             return result;
         }
 
-        public void build()
+        public void build(TextBox txb)
         {
+            txb.Text = "";
             Stack<List<List<List<int>>>> transitionFunction = new Stack<List<List<List<int>>>>();
 
             for (int i = 0; i < _postfixRE.Length; ++i)
@@ -204,6 +206,7 @@ namespace Thompson
                             currentGraph[last.Count][0].Add(1);
                             currentGraph[last.Count][0].Add(1 + last.Count);
                             transitionFunction.Push(currentGraph);
+                            print(currentGraph, txb);
                         }
                         break;
 
@@ -221,7 +224,7 @@ namespace Thompson
                                     for (int kk = 0; kk < right[ii][jj].Count; ++kk)
                                         currentGraph[ii + left.Count - 1][jj].Add(right[ii][jj][kk] + left.Count - 1);
                             transitionFunction.Push(currentGraph);
-
+                            print(currentGraph, txb);
                         }
                         break;
 
@@ -232,11 +235,11 @@ namespace Thompson
                             List<List<List<int>>> currentGraph = createEmptyGraph(left.Count + right.Count + 2, alphabet.Count);
 
                             currentGraph[0][0].Add(1);
-                            currentGraph[0][0].Add(left.Count+1);
+                            currentGraph[0][0].Add(left.Count + 1);
                             for (int ii = 0; ii < left.Count; ++ii)
                                 for (int jj = 0; jj < left[ii].Count; ++jj)
                                     for (int kk = 0; kk < left[ii][jj].Count; ++kk)
-                                        currentGraph[ii+1][jj].Add(left[ii][jj][kk] + 1);
+                                        currentGraph[ii + 1][jj].Add(left[ii][jj][kk] + 1);
 
                             for (int ii = 0; ii < right.Count; ++ii)
                                 for (int jj = 0; jj < right[ii].Count; ++jj)
@@ -246,7 +249,7 @@ namespace Thompson
                             currentGraph[left.Count][0].Add(currentGraph.Count - 1);
                             currentGraph[right.Count + left.Count][0].Add(currentGraph.Count - 1);
                             transitionFunction.Push(currentGraph);
-
+                            print(currentGraph, txb);
                         }
                         break;
 
@@ -255,43 +258,66 @@ namespace Thompson
                             List<List<List<int>>> currentGraph = createEmptyGraph(2, alphabet.Count);
                             currentGraph[0][indexInAlphabet].Add(1);
                             transitionFunction.Push(currentGraph);
+                            print(currentGraph, txb);
                         }
                         break;
                 }
             }
             tabl = transitionFunction.Pop();
-            print(tabl);
+            print(tabl, txb);
         }
 
-        void print(List<List<List<int>>> tabl)
+        void print(List<List<List<int>>> tabl, TextBox txb)
         {
-            using (StreamWriter debug = new StreamWriter("debug.txt"))
+            System.Text.StringBuilder str_build = new System.Text.StringBuilder();
+            using (StringWriter sw = new StringWriter(str_build))
             {
-                debug.WriteLine("-----------------------------------------------------------------------------------------------------------------------------------------------");
+                sw.WriteLine("-------------------------------------------");
                 //Первый отступ
-                int fpad = 20;
+                int fpad = 5;
                 //размер стобца
-                int colsize = 10;
+                int colsize = 0;
 
-                string str = string.Format(string.Format("{0}{1}{2}", "{0,", fpad, "}"), " ");
-                for (int i = 0; i < alphabet.Count; i++)
-                    str += string.Format(string.Format("{0}{1}{2}", "{0,", colsize, "}"), alphabet[i]);
-                debug.WriteLine(str);
-
+                List<List<string>> string_vertex = new List<List<string>>();
                 for (int i = 0; i < tabl.Count; ++i)
                 {
-                    debug.Write("S" + i + ": ");
+                    string_vertex.Add(new List<string>());
                     for (int j = 0; j < tabl[i].Count; ++j)
                     {
-                        debug.Write("{");
-
+                        string_vertex[i].Add("");
                         for (int k = 0; k < tabl[i][j].Count; ++k)
-                            debug.Write(tabl[i][j][k] + " ");
-                        debug.Write("}, ");
+                        {
+                            if (k != 0)
+                                string_vertex[i][j] += ",";
+                            string_vertex[i][j] += "S" + tabl[i][j][k];
+                            colsize = Math.Max(colsize, string_vertex[i][j].Length);
+                        }
                     }
-                    debug.WriteLine("");
+                }
+
+                string str = string.Format(string.Format("{0}{1}{2}", "{0,", fpad, "}|"), "");
+
+                for (int i = 0; i < alphabet.Count; i++)
+                {
+                    int lf = (colsize + 1) / 2;
+                    int rf = (colsize + 1) - lf;
+                    str += string.Format(string.Format("{0}{1}{2}", "{0,", lf, "}"), "");
+                    str += alphabet[i];
+                    str += string.Format(string.Format("{0}{1}{2}", "{0,", rf, "}|"), "");
+                }
+                sw.WriteLine(str);
+
+                for (int i = 0; i < string_vertex.Count; ++i)
+                {
+                    string row = String.Format(String.Format("{0}{1}{2}", "{0,", -fpad, "}|"), "S" + i);
+                    for (int j = 0; j < string_vertex[i].Count; ++j)
+                    {
+                        row += string.Format(string.Format("{0}{1}{2}", "{0}{1,", colsize, "}{2}|"), "{", string_vertex[i][j], "}");
+                    }
+                    sw.WriteLine(row);
                 }
             }
+            txb.Text += str_build.ToString();
         }
     }
 }

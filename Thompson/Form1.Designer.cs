@@ -35,8 +35,6 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.textbox_graph = new System.Windows.Forms.TextBox();
             this.button_save = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
             this.button_build = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.textbox_PostfixRE = new System.Windows.Forms.TextBox();
@@ -58,7 +56,6 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // panel1
             // 
@@ -84,6 +81,7 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(687, 577);
             this.tabControl1.TabIndex = 2;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             this.tabControl1.Resize += new System.EventHandler(this.Form1_Resize);
             // 
             // tabPage1
@@ -116,39 +114,21 @@
             this.textbox_graph.Location = new System.Drawing.Point(7, 7);
             this.textbox_graph.Multiline = true;
             this.textbox_graph.Name = "textbox_graph";
+            this.textbox_graph.ReadOnly = true;
             this.textbox_graph.Size = new System.Drawing.Size(666, 538);
             this.textbox_graph.TabIndex = 22;
             // 
             // button_save
             // 
             this.button_save.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button_save.Location = new System.Drawing.Point(706, 546);
+            this.button_save.Enabled = false;
+            this.button_save.Location = new System.Drawing.Point(708, 183);
             this.button_save.Name = "button_save";
             this.button_save.Size = new System.Drawing.Size(120, 39);
             this.button_save.TabIndex = 20;
             this.button_save.Text = "Сохранить";
             this.button_save.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(705, 180);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(50, 13);
-            this.label4.TabIndex = 19;
-            this.label4.Text = "Таблица";
-            // 
-            // textBox4
-            // 
-            this.textBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox4.Location = new System.Drawing.Point(708, 199);
-            this.textBox4.Multiline = true;
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(118, 341);
-            this.textBox4.TabIndex = 18;
+            this.button_save.Click += new System.EventHandler(this.button_save_Click);
             // 
             // button_build
             // 
@@ -176,6 +156,7 @@
             this.textbox_PostfixRE.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.textbox_PostfixRE.Location = new System.Drawing.Point(708, 128);
             this.textbox_PostfixRE.Name = "textbox_PostfixRE";
+            this.textbox_PostfixRE.ReadOnly = true;
             this.textbox_PostfixRE.Size = new System.Drawing.Size(121, 20);
             this.textbox_PostfixRE.TabIndex = 15;
             // 
@@ -194,6 +175,7 @@
             this.textbox_InfixRE.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.textbox_InfixRE.Location = new System.Drawing.Point(708, 89);
             this.textbox_InfixRE.Name = "textbox_InfixRE";
+            this.textbox_InfixRE.ReadOnly = true;
             this.textbox_InfixRE.Size = new System.Drawing.Size(121, 20);
             this.textbox_InfixRE.TabIndex = 13;
             // 
@@ -222,8 +204,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(844, 601);
             this.Controls.Add(this.button_save);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBox4);
             this.Controls.Add(this.button_build);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textbox_PostfixRE);
@@ -235,7 +215,8 @@
             this.Controls.Add(this.button1);
             this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Алгоритм Томпсона для построения НКА";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -255,8 +236,6 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TextBox textbox_graph;
         private System.Windows.Forms.Button button_save;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.Button button_build;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textbox_PostfixRE;

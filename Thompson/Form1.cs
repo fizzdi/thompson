@@ -163,8 +163,8 @@ namespace Thompson
 
                             if (paintLine[fvertex][svertex] % 2 == 1)
                             {
-                                 g.DrawLine(pen, a, b);
-                                 g.DrawString(letter, Font, Brushes.Black, getPointForText(pb0.Location, pb1.Location, pb1.Width / 2));
+                                g.DrawLine(pen, a, b);
+                                g.DrawString(letter, Font, Brushes.Black, getPointForText(pb0.Location, pb1.Location, pb1.Width / 2));
                             }
                             else
                             {
@@ -239,6 +239,7 @@ namespace Thompson
                         }
                     }
                 }
+                g.Save();
             }
         }
 
@@ -297,9 +298,10 @@ namespace Thompson
                 using (Graphics g = Graphics.FromImage(cur.Image))
                 {
                     //отрисовка круга и дополнительного круга, если вершина конечна
+                    Pen myBorderPen = new Pen(Color.Black, 1.8f);
                     if (isfinal[i])
-                        g.DrawEllipse(Pens.Black, 4, 4, w - 8, h - 8);
-                    g.DrawEllipse(Pens.Black, 1, 1, w - 2, h - 2);
+                        g.DrawEllipse(myBorderPen, 4, 4, w - 8, h - 8);
+                    g.DrawEllipse(myBorderPen, 1, 1, w - 2, h - 2);
                     //вписывание названия вершины
                     g.DrawString("S" + i, Font, Brushes.Black, (float)w / 2 - 10, (float)h / 2 - 10);
                 }
@@ -313,27 +315,6 @@ namespace Thompson
                 pbs.Add(cur);
                 panel1.Controls.Add(cur);
             }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //MessageBox.Show("Инфиксная форма\n" + input.lines[0]);
-            //nfa = new NFA(input.lines[0]);
-            //MessageBox.Show("Постфиксная форма\n" + nfa.postfixRE);
-            nfa.build();
-
-            createPictureBoxes(nfa.tabl[0].Count);
-
-            /*string[] str = new string[input.lines.Length];
-            for (int i = 1; i < input.lines.Length; i++)
-            {
-                str[i] = '"' + input.lines[i] + '"' + nfa.make(input.lines[i]);
-                MessageBox.Show(str[i]);
-            }
-            string path = Directory.GetCurrentDirectory() + '/';
-            using (StreamWriter outputFile = new StreamWriter(path + "output.txt"))
-                foreach (string st in str)
-                    outputFile.WriteLine(st);*/
         }
 
         //Разрешаем перенос, если переносится картинка
@@ -367,9 +348,55 @@ namespace Thompson
             textbox_PostfixRE.Text = nfa.PostixRegularExpression;
             textbox_InfixRE.Text = nfa.InfixRegularExpression;
 
-            nfa.build();
+            nfa.build(textbox_graph);
             createPictureBoxes(nfa.tabl.Count);
             drawLines();
+            button_save.Enabled = true;
+        }
+
+        private void button_save_Click(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedIndex == 0)
+            {
+                Bitmap bmp = new Bitmap(panel1.Width, panel1.Height);
+                Rectangle rect = panel1.RectangleToScreen(panel1.Bounds);
+                Graphics.FromImage(bmp).CopyFromScreen(rect.Left, rect.Top, 0, 0, bmp.Size, CopyPixelOperation.SourceCopy);
+
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp";
+                sfd.Title = "Сохранение графика";
+                sfd.ShowDialog();
+                if (sfd.FileName != "")
+                {
+                    string extention = Path.GetExtension(sfd.FileName);
+                    if (extention == ".png")
+                        bmp.Save(sfd.FileName, System.Drawing.Imaging.ImageFormat.Png);
+                    if (extention == ".jpg")
+                        bmp.Save(sfd.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                }
+            }
+            else
+            {
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "Text file|*.txt";
+                sfd.Title = "Сохранение лога построения графика";
+                sfd.ShowDialog();
+                if (sfd.FileName != "")
+                {
+                    using (StreamWriter sw = new StreamWriter(sfd.FileName))
+                        sw.Write(textbox_graph.Text);
+                }
+            }
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            drawLines();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            textbox_graph.Font = new Font(FontFamily.GenericMonospace, textbox_graph.Font.Size);
         }
 
         /*private void button2_Click(object sender, EventArgs e)
