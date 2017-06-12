@@ -365,8 +365,8 @@ namespace Thompson
         {
             if (tabControl1.SelectedIndex == 0)
             {
-                Bitmap bmp = new Bitmap(panel1.Width, panel1.Height);
                 Rectangle rect = panel1.RectangleToScreen(panel1.Bounds);
+                Bitmap bmp = new Bitmap(rect.Width, rect.Height);
                 Graphics.FromImage(bmp).CopyFromScreen(rect.Left, rect.Top, 0, 0, bmp.Size, CopyPixelOperation.SourceCopy);
 
                 SaveFileDialog sfd = new SaveFileDialog();

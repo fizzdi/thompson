@@ -122,7 +122,7 @@
             // 
             // button_save
             // 
-            this.button_save.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button_save.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_save.Enabled = false;
             this.button_save.Location = new System.Drawing.Point(708, 183);
             this.button_save.Name = "button_save";
@@ -202,6 +202,7 @@
             // 
             // button_check
             // 
+            this.button_check.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button_check.Enabled = false;
             this.button_check.Location = new System.Drawing.Point(708, 229);
             this.button_check.Name = "button_check";
