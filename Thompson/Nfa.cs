@@ -28,7 +28,7 @@ namespace Thompson
         }
 
         public List<Char> alphabet;
-        public List<List<List<int>>> tabl;
+        public List<List<List<int>>> grid;
         Random rnd = new Random();
 
         private static bool checkRegularBracketSequence(String str)
@@ -264,8 +264,8 @@ namespace Thompson
                         break;
                 }
             }
-            tabl = transitionFunction.Pop();
-            print(tabl, txb);
+            grid = transitionFunction.Pop();
+            print(grid, txb);
         }
 
         void print(List<List<List<int>>> tabl, TextBox txb)
@@ -319,6 +319,40 @@ namespace Thompson
                 }
             }
             txb.Text += str_build.ToString();
+        }
+
+        public bool make(string st)
+        {
+            int m = alphabet.Count;
+            int n;
+            Stack s = new Stack();//входной стек
+            Stack r = new Stack();//выходной стек
+            for (int i = 0; i < grid[0][0].Count; i++)
+                s.Push(grid[0][0][i]);
+            s.Push(0);
+            for (int i = 0; i < st.Length; i++)
+            {
+                if ((n = alphabet.IndexOf(st[i])) < 0) return false;
+                while (s.Count > 0)
+                {
+                    int state = (int)s.Pop();//состояние
+                    for (int j = 0; j < grid[state][n].Count; j++)
+                        addStates(r, grid[state][n][j]);
+
+                    for (int j = 0; j < grid[state][0].Count; ++j)
+                        addStates(r, grid[state][0][j]);
+                }
+                while (r.Count > 0)
+                    s.Push(r.Pop());
+            }
+            return (s.Contains(grid.Count - 1));
+        }
+
+        private void addStates(Stack r, int cur_state)
+        {
+            if (!r.Contains(cur_state)) r.Push(cur_state);
+            for (int i = 0; i < grid[cur_state][0].Count; ++i)
+                addStates(r, grid[cur_state][0][i]);
         }
     }
 }

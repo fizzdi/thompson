@@ -19,9 +19,10 @@ C:\Users\Fizz\Desktop\Thompson\Thompson\obj\Debug\Thompson.csproj.GenerateResour
 E:\study\Thompson\Thompson\bin\Debug\Thompson.exe.config
 E:\study\Thompson\Thompson\bin\Debug\Thompson.exe
 E:\study\Thompson\Thompson\bin\Debug\Thompson.pdb
-E:\study\Thompson\Thompson\obj\Debug\Thompson.Form1.resources
 E:\study\Thompson\Thompson\obj\Debug\Thompson.Properties.Resources.resources
 E:\study\Thompson\Thompson\obj\Debug\Thompson.csproj.GenerateResource.Cache
 E:\study\Thompson\Thompson\obj\Debug\Thompson.exe
 E:\study\Thompson\Thompson\obj\Debug\Thompson.pdb
 E:\study\Thompson\Thompson\obj\Debug\Thompson.csprojResolveAssemblyReference.cache
+E:\study\Thompson\Thompson\obj\Debug\Thompson.CheckForm.resources
+E:\study\Thompson\Thompson\obj\Debug\Thompson.MainForm.resources

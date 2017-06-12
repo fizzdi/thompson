@@ -12,7 +12,7 @@ using System.Collections;
 
 namespace Thompson
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         NFA nfa;
 
@@ -31,7 +31,7 @@ namespace Thompson
         bool is_builded = false;
 
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -86,7 +86,7 @@ namespace Thompson
 
         private List<List<int>> getNumberConnections()
         {
-            int nv = nfa.tabl.Count; //количество вершин
+            int nv = nfa.grid.Count; //количество вершин
             List<List<int>> res = new List<List<int>>();
             for (int i = 0; i < nv; ++i)
             {
@@ -96,14 +96,14 @@ namespace Thompson
                     res[i].Add(0);
                 }
             }
-            for (int i = 0; i < nfa.tabl.Count; ++i)
+            for (int i = 0; i < nfa.grid.Count; ++i)
             {
-                for (int j = 0; j < nfa.tabl[i].Count; ++j)
+                for (int j = 0; j < nfa.grid[i].Count; ++j)
                 {
-                    for (int k = 0; k < nfa.tabl[i][j].Count; ++k)
+                    for (int k = 0; k < nfa.grid[i][j].Count; ++k)
                     {
-                        res[i][nfa.tabl[i][j][k]]++;
-                        res[nfa.tabl[i][j][k]][i]++;
+                        res[i][nfa.grid[i][j][k]]++;
+                        res[nfa.grid[i][j][k]][i]++;
                     }
                 }
             }
@@ -123,7 +123,7 @@ namespace Thompson
 
             List<List<int>> paintLine = getNumberConnections();
 
-            int nv = nfa.tabl.Count; //количество вершин
+            int nv = nfa.grid.Count; //количество вершин
             List<List<int>> paintedLine = new List<List<int>>();
             for (int i = 0; i < nv; ++i)
             {
@@ -140,16 +140,16 @@ namespace Thompson
                 //очистка панели
                 g.Clear(Color.White);
 
-                for (int i = 0; i < nfa.tabl.Count; ++i)
+                for (int i = 0; i < nfa.grid.Count; ++i)
                 {
                     int fvertex = i; //номер стартовой вершины
                     PictureBox pb0 = pbs[fvertex];
-                    for (int j = 0; j < nfa.tabl[i].Count; ++j)
+                    for (int j = 0; j < nfa.grid[i].Count; ++j)
                     {
                         //перебор всех переходов
-                        for (int k = 0; k < nfa.tabl[i][j].Count; ++k)
+                        for (int k = 0; k < nfa.grid[i][j].Count; ++k)
                         {
-                            int svertex = nfa.tabl[i][j][k]; //номер конечной вершины
+                            int svertex = nfa.grid[i][j][k]; //номер конечной вершины
                             PictureBox pb1 = pbs[svertex];
 
                             Point a, b;
@@ -256,9 +256,9 @@ namespace Thompson
             if (isfinal[v])
                 return true;
 
-            for (int i = 0; i < nfa.tabl[v][0].Count; ++i)
+            for (int i = 0; i < nfa.grid[v][0].Count; ++i)
             {
-                isfinal[v] = isfinal[v] || checkfinal(nfa.tabl[v][0][i]);
+                isfinal[v] = isfinal[v] || checkfinal(nfa.grid[v][0][i]);
                 if (isfinal[v])
                     return true;
             }
@@ -355,9 +355,10 @@ namespace Thompson
 
             nfa.build(textbox_graph);
             is_builded = true;
-            createPictureBoxes(nfa.tabl.Count);
+            createPictureBoxes(nfa.grid.Count);
             drawLines();
             button_save.Enabled = true;
+            button_check.Enabled = true;
         }
 
         private void button_save_Click(object sender, EventArgs e)
@@ -405,11 +406,10 @@ namespace Thompson
             textbox_graph.Font = new Font(FontFamily.GenericMonospace, textbox_graph.Font.Size);
         }
 
-        /*private void button2_Click(object sender, EventArgs e)
-        {// ганерим случайную строку из алфавита
-            string s = nfa.rndm();
-            MessageBox.Show(s + nfa.make(s));
-            
-        }*/
+        private void button_check_Click(object sender, EventArgs e)
+        {
+            CheckForm chkfrm = new CheckForm(nfa);
+            chkfrm.ShowDialog();
+        }
     }
 }
